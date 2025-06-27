@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title><?= $title ?? 'Dashboard - Plataforma AV' ?></title>
+  <link rel="stylesheet" href="/gestion-tareas-diana/public/css/layout.css">
+
+  <?php if (!empty($extraCss)) : ?>
+    <link rel="stylesheet" href="/gestion-tareas-diana/public/css/<?= $extraCss ?>">
+  <?php endif; ?>
+</head>
+
+<body>
+  <div class="dashboard-container">
+
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="/gestion-tareas-diana/public/img/logo-plataformaav.png">
+        <h2>Plataforma AV</h2>
+      </div>
+      <nav class="menu">
+        <div class="top-links">
+          <a href="/gestion-tareas-diana/public/index.php?action=dashboard">Mis Tareas</a>
+          <a href="/gestion-tareas-diana/public/index.php?action=create">Nueva Tarea</a>
+        </div>
+        <div class="bottom-link">
+          <a href="/gestion-tareas-diana/public/index.php?action=logout">Cerrar sesión</a>
+        </div>
+      </nav>
+    </aside>
+
+    <div class="main-content">
+
+      <div class="content">
+        <?php
+        if (isset($view) && file_exists($view)) {
+          include $view;
+        } else {
+          echo "<p>Error: vista no encontrada.</p>";
+        }
+        ?>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>
