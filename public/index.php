@@ -44,6 +44,12 @@ switch ($action) {
     case 'deleteTask':
         $taskController->deleteTask();
         break;
+    case 'pendingTasks':
+        $taskController->showPendingTasks();
+        break;
+        case 'completeTask':
+    $taskController->completeTask();
+    break;
 
 
     default:

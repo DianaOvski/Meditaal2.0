@@ -16,9 +16,6 @@
       <option value="Baja">Baja</option>
     </select>
 
-    <label>
-       Marca si la tarea se encuentra completada: <input type="checkbox" name="completed">
-    </label>
 
     <button type="submit">Crear tarea</button>
   </form>

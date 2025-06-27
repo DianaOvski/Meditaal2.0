@@ -22,6 +22,7 @@
       <nav class="menu">
         <div class="top-links">
           <a href="/gestion-tareas-diana/public/index.php?action=dashboard">Mis Tareas</a>
+          <a href="/gestion-tareas-diana/public/index.php?action=pendingTasks">Mis Pendientes</a>
           <a href="/gestion-tareas-diana/public/index.php?action=create">Nueva Tarea</a>
         </div>
         <div class="bottom-link">

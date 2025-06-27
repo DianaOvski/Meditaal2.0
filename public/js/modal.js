@@ -1,7 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // -------------------------------
   // MODAL DE EDICIÓN
-  // -------------------------------
   const editModal = document.getElementById('editModal');
   const editCloseBtn = editModal?.querySelector('.close');
   const editButtons = document.querySelectorAll('.edit-btn');
@@ -13,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('edit-description').value = button.dataset.description;
       document.getElementById('edit-due_date').value = button.dataset.due_date;
       document.getElementById('edit-priority').value = button.dataset.priority;
-      document.getElementById('edit-completed').checked = button.dataset.completed == 1;
 
       editModal.style.display = 'flex';
     });
@@ -29,9 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // -------------------------------
   // MODAL DE ELIMINACIÓN
-  // -------------------------------
   const deleteModal = document.getElementById('deleteModal');
   const closeDeleteBtn = document.querySelector('.close-delete');
   const cancelBtn = document.querySelector('.btn-cancel');
@@ -59,4 +54,29 @@ document.addEventListener('DOMContentLoaded', () => {
       deleteModal.style.display = 'none';
     }
   });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const viewModal = document.getElementById('viewModal');
+  const closeViewBtn = document.querySelector('.close-view');
+  const viewButtons = document.querySelectorAll('.view-btn');
+
+  viewButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      document.getElementById('view-title').value = button.dataset.title;
+      document.getElementById('view-description').value = button.dataset.description;
+      document.getElementById('view-comentario').value = button.dataset.comentario;
+
+      const archivo = button.dataset.archivo;
+      const archivoHTML = archivo
+        ? `<a href="/gestion-tareas-diana/public/uploads/${archivo}" target="_blank">${archivo}</a>`
+        : '-';
+      document.getElementById('view-archivo').innerHTML = archivoHTML;
+
+      viewModal.style.display = 'flex';
+    });
+  });
+
+  closeViewBtn.onclick = () => viewModal.style.display = 'none';
+  window.onclick = e => { if (e.target === viewModal) viewModal.style.display = 'none'; };
 });
