@@ -1,6 +1,6 @@
 <div class="form-wrapper">
   <h2>Crear nueva tarea</h2>
-  <form method="POST" action="/gestion-tareas-diana/public/index.php?action=saveTask">
+  <form method="POST" action="index.php?action=saveTask">
     <label for="">Titulo</label>
     <input type="text" name="title" placeholder="Título" required>
     <label for="">Descripción</label>
@@ -27,7 +27,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear</title>
-    <link rel="stylesheet" href="/gestion-tareas-diana/public/css/createTask.css">
+    <link rel="stylesheet" href="css/createTask.css">
 </head>
 <body>
     

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listar</title>
-    <link rel="stylesheet" href="/gestion-tareas-diana/public/css/listTask.css">
+    <link rel="stylesheet" href="css/listTask.css">
 
 </head>
 
@@ -96,7 +96,7 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <h3>Editar Tarea</h3>
-            <form method="POST" action="/gestion-tareas-diana/public/index.php?action=updateTask">
+            <form method="POST" action="index.php?action=updateTask">
                 <input type="hidden" name="id" id="edit-id">
                 <label for="">Título</label>
                 <input type="text" name="title" id="edit-title" required>
@@ -120,7 +120,7 @@
         <div class="modal-content delete">
             <span class="close-delete">&times;</span>
             <h3>¿Estás segura de eliminar esta tarea?</h3>
-            <form method="POST" action="/gestion-tareas-diana/public/index.php?action=deleteTask">
+            <form method="POST" action="index.php?action=deleteTask">
                 <input type="hidden" name="id" id="delete-id">
                 <div class="modal-buttons">
                     <button type="submit" class="btn-confirm">Sí, eliminar</button>
@@ -152,8 +152,8 @@
 
 
 
-    <script src="/gestion-tareas-diana/public/js/filter.js"></script>
-    <script src="/gestion-tareas-diana/public/js/modal.js"></script>
+    <script src="js/filter.js"></script>
+    <script src="js/modal.js"></script>
 </body>
 
 </html>

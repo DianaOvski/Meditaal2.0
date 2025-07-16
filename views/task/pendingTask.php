@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/gestion-tareas-diana/public/css/pendingTask.css">
+    <link rel="stylesheet" href="css/pendingTask.css">
     <title>Pendientes</title>
 </head>
 <body>
@@ -35,7 +35,7 @@
             <td><?= htmlspecialchars($task['comentario'] ?? '-') ?></td>
             <td>
               <?php if (!empty($task['archivo'])): ?>
-                <a href="/gestion-tareas-diana/public/uploads/<?= htmlspecialchars($task['archivo']) ?>" target="_blank">Ver archivo</a>
+                <a href="uploads/<?= htmlspecialchars($task['archivo']) ?>" target="_blank">Ver archivo</a>
               <?php else: ?>
                 -
               <?php endif; ?>
@@ -84,6 +84,6 @@
   </div>
 </div>
 
- <script src="/gestion-tareas-diana/public/js/pendingTasks.js"></script>
+ <script src="js/pendingTasks.js"></script>
 </body>
 </html>

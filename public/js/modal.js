@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('edit-due_date').value = button.dataset.due_date;
       document.getElementById('edit-priority').value = button.dataset.priority;
 
-      editModal.style.display = 'flex';
+      editModal.style.display = 'flex';g
     });
   });
 

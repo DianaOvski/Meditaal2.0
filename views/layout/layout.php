@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <title><?= $title ?? 'Dashboard - Plataforma AV' ?></title>
-  <link rel="stylesheet" href="/gestion-tareas-diana/public/css/layout.css">
+  <link rel="stylesheet" href="css/layout.css">
 
   <?php if (!empty($extraCss)) : ?>
-    <link rel="stylesheet" href="/gestion-tareas-diana/public/css/<?= $extraCss ?>">
+    <link rel="stylesheet" href="css/<?= $extraCss ?>">
   <?php endif; ?>
 </head>
 
@@ -16,17 +16,17 @@
 
     <aside class="sidebar">
       <div class="logo">
-        <img src="/gestion-tareas-diana/public/img/logo-plataformaav.png">
+        <img src="img/logo-plataformaav.png">
         <h2>Plataforma AV</h2>
       </div>
       <nav class="menu">
         <div class="top-links">
-          <a href="/gestion-tareas-diana/public/index.php?action=dashboard">Mis Tareas</a>
-          <a href="/gestion-tareas-diana/public/index.php?action=pendingTasks">Mis Pendientes</a>
-          <a href="/gestion-tareas-diana/public/index.php?action=create">Nueva Tarea</a>
+          <a href="index.php?action=dashboard">Mis Tareas</a>
+          <a href="index.php?action=pendingTasks">Mis Pendientes</a>
+          <a href="index.php?action=create">Nueva Tarea</a>
         </div>
         <div class="bottom-link">
-          <a href="/gestion-tareas-diana/public/index.php?action=logout">Cerrar sesión</a>
+          <a href="index.php?action=logout">Cerrar sesión</a>
         </div>
       </nav>
     </aside>

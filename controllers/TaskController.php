@@ -19,7 +19,7 @@ class TaskController
     }
 
     if (!isset($_SESSION['user_id'])) {
-        header("Location: /gestion-tareas-diana/public/index.php?action=login");
+        header("Location: index.php?action=login");
         exit;
     }
 
@@ -118,7 +118,7 @@ class TaskController
     }
 
     if (!isset($_SESSION['user_id'])) {
-        header("Location: /gestion-tareas-diana/public/index.php?action=login");
+        header("Location: index.php?action=login");
         exit;
     }
 
@@ -136,7 +136,7 @@ class TaskController
     }
 
     // Redirecciona de nuevo a la lista de tareas
-    header("Location: /gestion-tareas-diana/public/index.php?action=listTasks");
+    header("Location: index.php?action=listTasks");
     exit;
 }
 
@@ -164,7 +164,7 @@ class TaskController
         $stmt->bind_param("ssssi", $title, $description, $due_date, $priority, $id);
 
         if ($stmt->execute()) {
-            header("Location: /gestion-tareas-diana/public/index.php?action=dashboard");
+            header("Location: index.php?action=dashboard");
             exit;
         } else {
             echo "Error al actualizar la tarea: " . $stmt->error;
@@ -179,7 +179,7 @@ public function showPendingTasks()
     if (session_status() === PHP_SESSION_NONE) session_start();
 
     if (!isset($_SESSION['user_id'])) {
-        header("Location: /gestion-tareas-diana/public/index.php?action=login");
+        header("Location: index.php?action=login");
         exit;
     }
 

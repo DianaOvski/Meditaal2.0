@@ -5,15 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrar</title>
-    <link rel="stylesheet" href="/gestion-tareas-diana/public/css/auth.css">
-    <script src="/gestion-tareas-diana/public/js/transition-load.js"></script>
+    <link rel="stylesheet" href="css/auth.css">
+    <script src="js/transition-load.js"></script>
 </head>
 
 <body>
     <div class="container" id="mainContainer">
         <!-- imagen -->
         <div class="left-panel">
-            <img src="/gestion-tareas-diana/public/img/logo-plataformaav.png" alt="logo-plataformaav">
+            <img src="img/logo-plataformaav.png" alt="logo-plataformaav">
             <p class="tittle">Plataforma Av</p>
             <p class="text"> Event Production Company</p>
         </div>

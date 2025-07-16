@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const formData = new FormData(form);
 
     try {
-      const response = await fetch('/gestion-tareas-diana/public/index.php?action=completeTask', {
+      const response = await fetch('index.php?action=completeTask', {
         method: 'POST',
         body: formData
       });
