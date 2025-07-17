@@ -10,20 +10,29 @@ class AuthController
         include __DIR__ . '/../views/layout/footer.php';
     }
 
-    public function register()
+    public function createUser()
     {
-        include __DIR__ . '/../views/layout/header.php';
-        include __DIR__ . '/../views/auth/register.php';
-        include __DIR__ . '/../views/layout/footer.php';
+        $title = "Crear Usuario";
+        $view = __DIR__ . '/../views/users/createUser.php';
+        include __DIR__ . '/../views/layout/layout.php';
     }
 
-    public function storeRegister()
+    public function storeUser()
     {
-        $user = User::register($_POST['username'], $_POST['email'], $_POST['password']);
-        if ($user) {
-            header("Location: index.php?action=login");
-        } else {
-            echo "Error al registrar usuario.";
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $name = $_POST['name'];
+            $username = $_POST['username'];
+            $email = $_POST['email'];
+            $password = $_POST['password'];
+            $role = $_POST['role'];
+
+            $user = User::registerDashboard($name, $username, $email, $password, $role);
+
+            if ($user) {
+                header("Location: index.php?action=dashboard");
+            } else {
+                echo "Error al crear el usuario.";
+            }
         }
     }
 
@@ -42,25 +51,23 @@ class AuthController
         }
     }
 
-   public function dashboard()
-{
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
+    public function dashboard()
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (!isset($_SESSION['user_id'])) {
+            header("Location: index.php?action=login");
+            exit;
+        }
+
+        $username = $_SESSION['username'] ?? 'Usuario';
+        $title = "Dashboard";
+        $view = __DIR__ . '/../views/dashboard.php';
+
+        include __DIR__ . '/../views/layout/layout.php';
     }
-
-    if (!isset($_SESSION['user_id'])) {
-        header("Location: index.php?action=login");
-        exit;
-    }
-
-    $username = $_SESSION['username'] ?? 'Usuario';
-    $title = "Dashboard";
-    $view = __DIR__ . '/../views/dashboard.php';
-
-    include __DIR__ . '/../views/layout/layout.php';
-}
-
-
 
     public function logout()
     {

@@ -37,14 +37,14 @@ body, html {
 }
 
 .left-panel {
-  background-color: #000;
-  color: white;
+  background-color: #fff !important;
+  color: #DAA512;
   text-align: center;
-}
+} 
 
 
 img {
-    width: 60%;
+    width: 100%;
 }
 
 .tittle {

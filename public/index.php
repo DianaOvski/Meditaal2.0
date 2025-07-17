@@ -11,9 +11,9 @@ switch ($action) {
     case 'login':
         $authController->login();
         break;
-    case 'register':
-        $authController->register();
-        break;
+    case 'createUser':
+    $controller->createUser();
+    break;
     case 'storeRegister':
         $authController->storeRegister();
         break;

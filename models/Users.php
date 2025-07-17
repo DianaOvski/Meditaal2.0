@@ -6,8 +6,8 @@ class User {
     public static function register($username, $email, $password) {
         $conn = Database::connect();
         $hash = password_hash($password, PASSWORD_DEFAULT);
-        $stmt = $conn->prepare("INSERT INTO user (username, email, password) VALUES (?, ?, ?)");
-        $stmt->bind_param("sss", $username, $email, $hash);
+        $stmt = $conn->prepare("INSERT INTO user (name, username, email, password, role, created_at) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param($name, $username, $email, $password, $role, $created_at);
         return $stmt->execute();
     }
 

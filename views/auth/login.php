@@ -15,9 +15,8 @@
     <div class="container" id="mainContainer">
         <!-- imagen -->
         <div class="left-panel">
-            <img src="img/logo-plataformaav.png" alt="logo-plataformaav">
-            <p class="tittle">Plataforma Av</p>
-            <p class="text"> Event Production Company</p>
+            <img src="img/logo Angela.png" alt="logo-plataformaav">
+            <p class="text"> Consultorio</p>
         </div>
 
         <!-- formulario -->
