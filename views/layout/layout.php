@@ -25,6 +25,8 @@
           <a href="index.php?action=pendingTasks">Mis Pendientes</a>
           <a href="index.php?action=create">Nueva Tarea</a>
           <a href="">Crear usuario</a>
+          <a href="">Crear Paciente</a>
+          <a href="../views/calendario/calendario.html">Agenda</a>
         </div>
         <div class="bottom-link">
           <a href="index.php?action=logout">Cerrar sesión</a>
