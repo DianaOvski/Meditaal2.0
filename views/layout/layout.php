@@ -21,7 +21,7 @@
       </div>
       <nav class="menu">
         <div class="top-links">
-          <a href="index.php?action=dashboard">Crear paciente</a>
+          <a href="index.php?action=dashboard">Crear pacientes</a>
           <a href="index.php?action=pendingTasks">Mis Pacientes</a>
           <a href="index.php?action=create">Nueva Tarea</a>
           <a href="../views/users/createUser.php">Crear usuario</a>
