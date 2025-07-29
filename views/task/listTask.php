@@ -10,150 +10,146 @@
 </head>
 
 <body>
-    <div class="form-wrapper">
-        <h2> Mis Tareas</h2>
-
-        <?php if (empty($tasks)): ?>
-            <p style="margin-top: 8px;">No tienes tareas registradas.</p>
-        <?php else: ?>
-
-            <div class="filters">
-                <label>
-                    Fecha límite:
-                    <input type="date" id="filter-date">
-                </label>
-
-                <label>
-                    Prioridad:
-                    <select id="filter-priority">
-                        <option value="">Todas</option>
-                        <option value="Alta">Alta</option>
-                        <option value="Media">Media</option>
-                        <option value="Baja">Baja</option>
-                    </select>
-                </label>
-
-                <label>
-                    Estado:
-                    <select id="filter-status">
-                        <option value="">Todos</option>
-                        <option value="Completada">Completada</option>
-                        <option value="Pendiente">Pendiente</option>
-                    </select>
-                </label>
-            </div>
-
-            <table class="task-table">
-                <thead>
-                    <tr>
-                        <th>Título</th>
-                        <th>Descripción</th>
-                        <th>Fecha límite</th>
-                        <th>Prioridad</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($tasks as $task): ?>
-                        <tr>
-                            <td><?= htmlspecialchars($task['title']) ?></td>
-                            <td><?= htmlspecialchars($task['description']) ?></td>
-                            <td><?= htmlspecialchars($task['due_date']) ?></td>
-                            <td><?= htmlspecialchars($task['priority']) ?></td>
-                            <td><?= $task['completed'] ? 'Completada' : 'Pendiente' ?></td>
-                            <td>
-                                <?php if ($task['completed']): ?>
-                                    <button class="view-btn"
-                                        data-title="<?= htmlspecialchars($task['title']) ?>"
-                                        data-description="<?= htmlspecialchars($task['description']) ?>"
-                                        data-comentario="<?= htmlspecialchars($task['comentario']) ?>"
-                                        data-archivo="<?= htmlspecialchars($task['archivo']) ?>">
-                                        Ver
-                                    </button>
-                                <?php else: ?>
-                                    <button class="edit-btn"
-                                        data-id="<?= $task['id'] ?>"
-                                        data-title="<?= htmlspecialchars($task['title']) ?>"
-                                        data-description="<?= htmlspecialchars($task['description']) ?>"
-                                        data-due_date="<?= $task['due_date'] ?>"
-                                        data-priority="<?= $task['priority'] ?>"
-                                        data-completed="<?= $task['completed'] ?>">
-                                        Editar
-                                    </button>
-                                    <button class="delete-btn" data-id="<?= $task['id'] ?>">Eliminar</button>
-                                <?php endif; ?>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        <?php endif; ?>
-    </div>
-
-    <!-- Modal para editar -->
-    <div id="editModal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h3>Editar Tarea</h3>
-            <form method="POST" action="index.php?action=updateTask">
-                <input type="hidden" name="id" id="edit-id">
-                <label for="">Título</label>
-                <input type="text" name="title" id="edit-title" required>
-                <label for="">Descripción</label>
-                <textarea name="description" id="edit-description" required></textarea>
-                <label for="">Fecha de vencimiento</label>
-                <input type="date" name="due_date" id="edit-due_date" required>
-                <label for="">Prioridad</label>
-                <select name="priority" id="edit-priority" required>
-                    <option value="Alta">Alta</option>
-                    <option value="Media">Media</option>
-                    <option value="Baja">Baja</option>
-                </select>
-                <button type="submit">Guardar cambios</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal para confirmar eliminación -->
-    <div id="deleteModal" class="modal" style="display: none;">
-        <div class="modal-content delete">
-            <span class="close-delete">&times;</span>
-            <h3>¿Estás segura de eliminar esta tarea?</h3>
-            <form method="POST" action="index.php?action=deleteTask">
-                <input type="hidden" name="id" id="delete-id">
-                <div class="modal-buttons">
-                    <button type="submit" class="btn-confirm">Sí, eliminar</button>
-                    <button type="button" class="btn-cancel">Cancelar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal para ver detalles de la tarea finalizada -->
-    <div id="viewModal" class="modal view-modal" style="display: none;">
-  <div class="modal-content view-modal-content">
-    <span class="close-view">&times;</span>
-    <h3>Detalles de la Tarea</h3>
-
-    <label for="view-title">Título</label>
-    <input type="text" id="view-title" class="view-input" disabled>
-
-    <label for="view-description">Descripción</label>
-    <textarea id="view-description" class="view-textarea" disabled></textarea>
-
-    <label for="view-comentario">Comentario</label>
-    <textarea id="view-comentario" class="view-textarea" disabled></textarea>
-
-    <label for="view-archivo">Archivo</label>
-    <p id="view-archivo" class="view-file">-</p>
+    <main class="main">
+  <section class="form-wrapper">
+    <h2 class="form-title">Crear nuevo paciente</h2>
+    <form class="task-form-grid">
+  <div class="form-group">
+    <label for="titulo">Nombres</label>
+    <input type="text" id="titulo" placeholder="Nombres">
   </div>
+
+  <div class="form-group">
+    <label for="descripcion">Apellidos</label>
+    <input type="text" id="descripcion" placeholder="Apellidos">
+  </div>
+
+  <div class="form-group">
+    <label for="fecha">Fecha de nacimiento</label>
+    <input type="date" id="fecha">
+  </div>
+
+  <div class="form-group">
+    <label for="edad">Edad</label>
+    <input type="number" id="edad" placeholder="Edad">
+  </div>
+
+  <div class="form-group">
+    <label for="genero">Género</label>
+    <select id="genero">
+      <option value="Femenino">Femenino</option>
+      <option value="Masculino">Masculino</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="tipoIdentificacion">Tipo de documento</label>
+    <select id="tipoIdentificacion">
+      <option value="c.c.">Cédula de ciudadanía</option>
+      <option value="c.e.">Cédula de extranjería</option>
+      <option value="t.i.">Tarjeta de identidad</option>
+      <option value="r.c.">Registro civil</option>
+      <option value="p">Pasaporte</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="documento">Número de documento</label>
+    <input type="number" id="documento" placeholder="Número de documento">
+  </div>
+
+  <div class="form-group">
+    <label for="rh">RH</label>
+    <select id="rh">
+      <option value="o+">O+</option>
+      <option value="o-">O-</option>
+      <option value="a+">A+</option>
+      <option value="a-">A-</option>
+      <option value="b+">B+</option>
+      <option value="b-">B-</option>
+      <option value="ab+">AB+</option>
+      <option value="ab-">AB-</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="hijos">Cantidad de hijos</label>
+    <select id="hijos">
+      <option value="0">0</option>
+      <!-- ... -->
+      <option value="10">10</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="pais">País</label>
+    <input type="text" id="pais" placeholder="País">
+  </div>
+
+  <div class="form-group">
+    <label for="ciudad">Ciudad</label>
+    <input type="text" id="ciudad" placeholder="Ciudad">
+  </div>
+
+  <div class="form-group">
+    <label for="zona">Zona</label>
+    <select id="zona">
+      <option value="urbano">Urbano</option>
+      <option value="rural">Rural</option>
+      <option value="invasion">Invasión</option>
+    </select>
+  </div>
+
+  <div class="form-group col-span-2">
+    <label for="direccion">Dirección</label>
+    <input type="text" id="direccion" placeholder="Dirección">
+  </div>
+
+  <div class="form-group">
+    <label for="telefono">Teléfono</label>
+    <input type="number" id="telefono" placeholder="Teléfono">
+  </div>
+
+  <div class="form-group">
+    <label for="email">Correo electrónico</label>
+    <input type="email" id="email" placeholder="Correo electrónico">
+  </div>
+
+  <div class="form-group">
+    <label for="ocupacion">Ocupación</label>
+    <input type="text" id="ocupacion" placeholder="Ocupación">
+  </div>
+
+  <div class="form-group">
+    <label for="religion">Religión</label>
+    <input type="text" id="religion" placeholder="Religión">
+  </div>
+
+  <div class="form-group col-span-2">
+    <label for="enfermedad">¿Padece alguna enfermedad?</label>
+    <textarea id="enfermedad" placeholder="Describa si aplica..."></textarea>
+  </div>
+
+  <div class="form-group col-span-2">
+    <label for="medicamento">¿Toma algún medicamento?</label>
+    <textarea id="medicamento" placeholder="Describa si aplica..."></textarea>
+  </div>
+  <br>
+
+  <div class="form-group full-width">
+    <button type="submit" class="btn-submit">Crear Paciente</button>
+  </div>
+</form>
+
+  </section>
+</main>
+
+
+    
 </div>
 
 
 
-    <script src="js/filter.js"></script>
-    <script src="js/modal.js"></script>
 </body>
 
 </html>
