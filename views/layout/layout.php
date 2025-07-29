@@ -24,6 +24,7 @@
           <a href="index.php?action=dashboard">Crear paciente</a>
           <a href="index.php?action=pendingTasks">Mis Pacientes</a>
           <a href="index.php?action=create">Nueva Tarea</a>
+          <a href="../views/users/createUser.php">Crear usuario</a>
           <a href="../views/calendario/calendario.html">Agenda</a>
         </div>
         <div class="bottom-link">
