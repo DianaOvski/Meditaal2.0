@@ -22,9 +22,8 @@
       <nav class="menu">
         <div class="top-links">
           <a href="index.php?action=dashboard">Crear paciente</a>
-          <a href="index.php?action=pendingTasks">Mis Pendientes</a>
+          <a href="index.php?action=pendingTasks">Mis Pacientes</a>
           <a href="index.php?action=create">Nueva Tarea</a>
-          <a href="">Crear usuario</a>
           <a href="../views/calendario/calendario.html">Agenda</a>
         </div>
         <div class="bottom-link">

@@ -3,87 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/pendingTask.css">
+    <link rel="stylesheet" href="../css/pendingTask.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" integrity="sha512-XcIsjKMcuVe0Ucj/xgIXQnytNwBttJbNjltBV18IOnru2lDPe9KRRyvCXw6Y5H415vbBLRm8+q6fmLUU7DfO6Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <title>Pendientes</title>
 </head>
-<body>
- <div class="form-wrapper">
-  <h2>Tareas Pendientes</h2>
 
-  <?php if (empty($tasks)): ?>
-    <p style="margin-top: 20px;">No hay tareas pendientes.</p>
-  <?php else: ?>
-    <table class="task-table">
-      <thead>
-        <tr>
-          <th>Título</th>
-          <th>Descripción</th>
-          <th>Fecha límite</th>
-          <th>Prioridad</th>
-          <th>Comentario</th>
-          <th>Archivo</th>
-          <th>Completar</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php foreach ($tasks as $task): ?>
-          <tr>
-            <td><?= htmlspecialchars($task['title']) ?></td>
-            <td><?= htmlspecialchars($task['description']) ?></td>
-            <td><?= htmlspecialchars($task['due_date']) ?></td>
-            <td><?= htmlspecialchars($task['priority']) ?></td>
-            <td><?= htmlspecialchars($task['comentario'] ?? '-') ?></td>
-            <td>
-              <?php if (!empty($task['archivo'])): ?>
-                <a href="uploads/<?= htmlspecialchars($task['archivo']) ?>" target="_blank">Ver archivo</a>
-              <?php else: ?>
-                -
-              <?php endif; ?>
-            </td>
-            <td>
-     <button
-  class="complete-btn"
-  data-id="<?= $task['id'] ?>"
-  data-title="<?= htmlspecialchars($task['title']) ?>"
-  data-description="<?= htmlspecialchars($task['description']) ?>"
->
-  Completar
-</button>
+ <section class="table-wrapper">
+  <h2 class="table-title">Listado de Pacientes</h2>
+  <table class="styled-table">
+    <thead>
+      <tr>
+        <th>Nombres</th>
+        <th>Apellidos</th>
+        <th>Tipo de Documento</th>
+        <th>Número de Documento</th>
+        <th>Teléfono</th>
+        <th>Editar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td data-label="Nombres">Laura</td>
+        <td data-label="Apellidos">Gómez</td>
+        <td data-label="Tipo de Documento">C.C.</td>
+        <td data-label="Número de Documento">1032456789</td>
+        <td data-label="Teléfono">3124567890</td>
+        <td data-label="Editar">
+          <button class="btn-edit" title="Editar"><i class="ri-pencil-line"></i></button>
+        </td>
+      </tr>
+      <tr>
+        <td data-label="Nombres">Carlos</td>
+        <td data-label="Apellidos">Pérez</td>
+        <td data-label="Tipo de Documento">T.I.</td>
+        <td data-label="Número de Documento">950123456</td>
+        <td data-label="Teléfono">3119876543</td>
+        <td data-label="Editar">
+          <button class="btn-edit" title="Editar"><i class="ri-pencil-line"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
 
-
-            </td>
-          </tr>
-        <?php endforeach; ?>
-      </tbody>
-    </table>
-  <?php endif; ?>
-</div>
-
-<!-- modl para gestionar tareas pendientes -->
-<div id="completeModal" class="modal" style="display: none;">
-  <div class="modal-content">
-    <span class="close-complete">&times;</span>
-    <h3>Completar Tarea</h3>
-    <form id="complete-form" enctype="multipart/form-data">
-      <input type="hidden" name="id" id="complete-id">
-
-      <label for="complete-title">Título</label>
-      <input type="text" id="complete-title" disabled>
-
-      <label for="complete-description">Descripción</label>
-      <textarea id="complete-description" disabled></textarea>
-
-      <label for="comentario">Comentario</label>
-      <textarea name="comentario" required></textarea>
-
-      <label for="archivo">Adjuntar archivo</label>
-      <input type="file" name="archivo" accept=".pdf,.doc,.docx,.png,.jpg">
-
-      <button type="submit">Guardar</button>
-    </form>
-  </div>
-</div>
-
- <script src="js/pendingTasks.js"></script>
-</body>
 </html>
