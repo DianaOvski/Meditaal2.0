@@ -21,12 +21,10 @@
       </div>
       <nav class="menu">
         <div class="top-links">
-          <a href="index.php?action=dashboard">Mis Tareas</a>
+          <a href="index.php?action=dashboard">Crear paciente</a>
           <a href="index.php?action=pendingTasks">Mis Pendientes</a>
           <a href="index.php?action=create">Nueva Tarea</a>
           <a href="../views/users/createUser.php">Crear usuario</a>
-          <!-- <a href="index.php?action=storeRegister">Crear usuario</a> -->
-          <a href="">Crear Paciente</a>
           <a href="../views/calendario/calendario.html">Agenda</a>
         </div>
         <div class="bottom-link">
