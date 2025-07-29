@@ -1,3 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+
+.titleLayout {
+  font-family: 'Great Vibes', cursive; /* Aplica la fuente cursiva */
+  color: #FFD700; /* Color dorado */
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Agrega un sutil efecto de sombra para darle profundidad */
+  font-size: 1.5em; /* Tamaño de la fuente, puedes ajustarlo */
+  letter-spacing: 0.5px; /* Espaciado entre letras */
+  font-weight: normal;
+}
+
 img {
   width: 10%;
   height: auto;

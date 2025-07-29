@@ -16,8 +16,8 @@
 
     <aside class="sidebar">
       <div class="logo">
-        <img src="img/logo-plataformaav.png">
-        <h2>Plataforma AV</h2>
+        <img src="img/logo-plataformaav.png" alt="Logo">
+        <h2 class="titleLayout" >Dra. Angela Parra</h2>
       </div>
       <nav class="menu">
         <div class="top-links">
