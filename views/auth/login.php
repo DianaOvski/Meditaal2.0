@@ -15,7 +15,8 @@
     <div class="container" id="mainContainer">
         <!-- imagen -->
         <div class="left-panel">
-            <img src="img/logo Angela.png" alt="logo-plataformaav">
+
+        <img src="img/logo2.JPEG" alt="logo-plataformaav">
             <p class="text"> Consultorio</p>
         </div>
 
