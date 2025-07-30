@@ -23,8 +23,8 @@
         <div class="top-links">
           <a href="index.php?action=dashboard">Crear pacientes</a>
           <a href="index.php?action=pendingTasks">Mis Pacientes</a>
-          <a href="index.php?action=create">Nueva Tarea</a>
-          <a href="../views/users/createUser.php">Crear usuario</a>
+          <a href="index.php?action=create">Crear usuario</a>
+          <a href="../views/users/createUser.php">Crear usuario Sin crear</a>
           <a href="../views/calendario/calendario.html">Agenda</a>
         </div>
         <div class="bottom-link">
