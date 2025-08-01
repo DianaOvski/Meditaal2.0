@@ -21,7 +21,7 @@
       <option value="NIT">NIT</option>
     </select>
     <label for="">Número de Documento</label>
-    <input type="number" id="documentNumber" name="documentNumber" placeholder="Número de Documento" required>
+    <input type="number" id="documentNumber" name="documentNumber" placeholder="Número de Documento no puede empezar con 0" required>
     <label for="">Rol</label>
     <select id="Rol" name="Rol" required>
       <option value=""></option>

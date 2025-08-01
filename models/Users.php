@@ -49,7 +49,7 @@ class User {
     $stmt = $conn->prepare("INSERT INTO user (usu_id, name, username, email, password, documentType, documentNumber, rol, created_at, estado) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, NOW(), '1')");
 
     $stmt->bind_param(
-        "ssssssi", 
+        "sssssss", 
         $user->name, 
         $user->username, 
         $user->email, 
