@@ -17,8 +17,9 @@
       <option value="Tarjeta Indentidad">Tarjeta de Identidad</option>
       <option value="Pasaporte">Pasaporte</option>
       <option value="Cedula Extranjeria">Cedula de extranjería</option>
-      <option value="PP">P.P</option>
+      <option value="PEP">Permiso Especial de Permanencia</option>
       <option value="NIT">NIT</option>
+      <option value="PPT">Permiso por Protección Temporal</option>
     </select>
     <label for="">Número de Documento</label>
     <input type="number" id="documentNumber" name="documentNumber" placeholder="Número de Documento no puede empezar con 0" required>
