@@ -148,6 +148,38 @@ class Patient {
 
         return $stmt->num_rows > 0;
     }
+
+    public static function getPatients(){
+        $conn = Database::connect();
+        $stmt = $conn->prepare("SELECT Nombres, Apellidos, Tipo_identificacion, Documento, Telefono FROM patient WHERE estado = '1'");
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result === false) {
+            throw new Exception("Error al ejecutar la consulta: " . $conn->error);
+        }
+
+        $patients = [];
+        while ($row = $result->fetch_assoc()) {
+            $patients[] = $row;
+        }
+
+        return $patients;
+    }
+
+    public static function deletePatient($documento) {
+    $conn = Database::connect();
+    $stmt = $conn->prepare("UPDATE patient SET estado = 0 WHERE Documento = ?");
+    $stmt->bind_param("s", $documento);
+        
+        if ($stmt->execute()) {
+            return "success";
+        } else {
+            return "error: " . $stmt->error;
+        }
+    }
+
+
 }
 
 ?>

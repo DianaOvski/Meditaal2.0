@@ -31,5 +31,27 @@ switch ($_GET["op"]) {
         $response = Patient::insertPatient($patient);
         echo $response;
         break;
+
+    case "listarPacientes":
+        try {
+            $patients = Patient::getPatients();
+            echo json_encode($patients);  // Devolver los pacientes como JSON
+        } catch (Exception $e) {
+            // Si hay un error, mostrar el mensaje en formato JSON
+            echo json_encode(['error' => $e->getMessage()]);
+        }
+        break;
+
+    case "eliminarPaciente":
+        try {
+            $documento = $_POST['documento'];
+            $response = Patient::deletePatient($documento);
+            echo $response;
+        } catch (Exception $e) {
+            echo json_encode(['error' => $e->getMessage()]);
+        }
+    break;
+
 }
+
 ?>
