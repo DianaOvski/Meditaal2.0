@@ -235,4 +235,22 @@ public function completeTask()
     $conn->close();
 }
 
+ public function notes()
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (!isset($_SESSION['user_id'])) {
+            header("Location: index.php?action=login");
+            exit;
+        }
+
+        // lógica para cargar las notas desde la base de datos
+
+        $view = __DIR__ . '/../views/task/notes.php';
+        $title = 'Notas';
+        include __DIR__ . '/../views/layout/layout.php';
+    }
+
 }

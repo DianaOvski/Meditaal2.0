@@ -47,10 +47,12 @@ switch ($action) {
     case 'pendingTasks':
         $taskController->showPendingTasks();
         break;
-        case 'completeTask':
-    $taskController->completeTask();
-    break;
-
+    case 'completeTask':
+        $taskController->completeTask();
+        break;
+    case 'notes':
+        $taskController->notes();
+        break;
 
     default:
         echo "Página no encontrada.";
