@@ -2,10 +2,12 @@
 session_start();
 require_once "../models/Patient.php";
 
-$patient = new Patient();
+class PatientController {
 
-switch ($_GET["op"]) {
-    case "guardarPaciente":
+    // Método para manejar la acción de guardar paciente
+    public function guardarPaciente() {
+        $patient = new Patient();
+
         // Recogemos los datos del formulario
         $patient->setNombres($_POST["nombres"]);
         $patient->setApellidos($_POST["apellidos"]);
@@ -30,19 +32,20 @@ switch ($_GET["op"]) {
         // Insertamos el paciente
         $response = Patient::insertPatient($patient);
         echo $response;
-        break;
+    }
 
-    case "listarPacientes":
+    // Método para listar pacientes
+    public function listarPacientes() {
         try {
             $patients = Patient::getPatients();
             echo json_encode($patients);  // Devolver los pacientes como JSON
         } catch (Exception $e) {
-            // Si hay un error, mostrar el mensaje en formato JSON
             echo json_encode(['error' => $e->getMessage()]);
         }
-        break;
+    }
 
-    case "eliminarPaciente":
+    // Método para eliminar paciente
+    public function eliminarPaciente() {
         try {
             $documento = $_POST['documento'];
             $response = Patient::deletePatient($documento);
@@ -50,8 +53,42 @@ switch ($_GET["op"]) {
         } catch (Exception $e) {
             echo json_encode(['error' => $e->getMessage()]);
         }
-    break;
+    }
 
+    public function mostrarNotas() {
+        try {
+            // Obtén los pacientes desde la base de datos
+            $patients = Patient::getPatients();
+
+            // Pasamos la lista de pacientes a la vista de notas
+            include("../views/notes.php"); 
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();
+        }
+    }
 }
 
+// Instancia del controlador
+$patientController = new PatientController();
+
+// Dependiendo de la acción, llamamos al método correspondiente
+$action = $_GET['op'] ?? '';
+
+switch ($action) {
+    case "guardarPaciente":
+        $patientController->guardarPaciente();
+        break;
+    case "listarPacientes":
+        $patientController->listarPacientes();
+        break;
+    case "eliminarPaciente":
+        $patientController->eliminarPaciente();
+        break;
+    case "mostrarNotas":
+        $patientController->mostrarNotas();
+        break;
+    default:
+        echo "Acción no válida.";
+        break;
+}
 ?>

@@ -1,5 +1,7 @@
 <?php
 require_once __DIR__ . '/../models/Task.php';
+require_once __DIR__ . '/../models/Patient.php';  // Incluye la clase Patient
+
 session_start();
 
 class TaskController
@@ -235,7 +237,7 @@ public function completeTask()
     $conn->close();
 }
 
- public function notes()
+  public function notes()
     {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
@@ -246,11 +248,18 @@ public function completeTask()
             exit;
         }
 
-        // lógica para cargar las notas desde la base de datos
+        try {
+            // Obtén los pacientes desde la base de datos
+            $patients = Patient::getPatients();  // Usamos el modelo Patient para obtener la lista
 
-        $view = __DIR__ . '/../views/task/notes.php';
-        $title = 'Notas';
-        include __DIR__ . '/../views/layout/layout.php';
+            // Definir la vista a cargar
+            $view = __DIR__ . '/../views/task/notes.php';
+            $title = 'Notas';
+            // Pasar los pacientes a la vista
+            include __DIR__ . '/../views/layout/layout.php';  
+        } catch (Exception $e) {
+            echo "Error: " . $e->getMessage();  // Si hay un error, mostrarlo
+        }
     }
 
 }

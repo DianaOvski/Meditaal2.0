@@ -11,6 +11,7 @@
 
     <title>Notas</title>
 </head>
+<body>
 
 <h1>Notas para paciente</h1><br>
     <form action="index.php?action=saveNote" method="POST">
@@ -18,7 +19,9 @@
         <select name="patient_id" id="patient_id" required>
             <option value="">Selecciona un paciente</option>
             <?php foreach ($patients as $patient): ?>
-                <option value="<?php echo $patient['id']; ?>"><?php echo $patient['name']; ?></option>
+                <option value="<?php echo $patient['Documento']; ?>">
+                    <?php echo $patient['Nombres'] . ' ' . $patient['Apellidos']; ?>
+                </option>
             <?php endforeach; ?>
         </select><br><br>
         <label for="note">Notas: </label><br><br>
@@ -30,5 +33,5 @@
         </div>
     </form>
 
+</body>
 </html>
-
