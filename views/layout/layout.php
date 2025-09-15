@@ -27,6 +27,7 @@
           <a href="../views/users/createUser.php">Crear usuario Sin crear</a>
           <a href="../views/calendario/calendario.html">Agenda</a>
           <a href="index.php?action=notes">Notas</a>
+          <a href="index.php?action=agendaDos">Agenda Dos</a>
         </div>
         <div class="bottom-link">
           <a href="index.php?action=logout">Cerrar sesión</a>

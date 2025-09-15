@@ -53,6 +53,9 @@ switch ($action) {
     case 'notes':
         $taskController->notes();
         break;
+    case 'agendaDos':
+        $taskController->agendaDos();
+        break;
 
     default:
         echo "Página no encontrada.";
