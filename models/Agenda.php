@@ -2,24 +2,25 @@
 require_once __DIR__ . '/../config/database.php';
 
 class Agenda {
-    
-    public static function getTodayAppointments() {
+
+public static function getAllAppointments() {
     $conn = Database::connect();
 
-    // Obtener las citas de hoy
+    // Obtener todas las citas
     $query = "SELECT paciente_nombre, hora_agendada, estado, Nombre_Doctor, fecha_agenda 
-              FROM Agenda 
-              WHERE DATE(fecha_agenda) = CURDATE()";  // Filtra las citas por la fecha actual
+              FROM Agenda";  // Consulta todas las citas
 
     $result = $conn->query($query);
 
     $events = [];
     
+    // Recorre todas las filas de la base de datos y las convierte en eventos para el calendario
     while ($row = $result->fetch_assoc()) {
         $events[] = [
             'title' => $row['paciente_nombre'],  // Nombre del paciente
-            'start' => $row['fecha_agenda'],     // Fecha y hora del evento
+            'start' => $row['fecha_agenda'],     // Fecha y hora del evento (la columna `fecha_agenda` debe incluir la hora)
             'color' => $row['estado'] == 'Agendado' ? 'lightblue' : 'gray',  // Color basado en el estado
+            'doctor' => $row['Nombre_Doctor'],  // Nombre del doctor
         ];
     }
 

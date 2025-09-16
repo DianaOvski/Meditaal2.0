@@ -126,14 +126,15 @@
                         right: 'dayGridMonth,timeGridWeek,timeGridDay'
                     },
                     events: function(info, successCallback, failureCallback) {
-                            fetch('../controllers/agendaController.php') // Solicita los eventos al controlador
-                                .then(response => response.json())
-                                .then(data => {
-                                  successCallback(data);  // Pasa los eventos al calendario
-                                })
-                                .catch(error => {
-                                    console.error('Error al cargar los eventos:', error);
-                                    failureCallback(error);
+                        // Cargar todos los eventos agendados
+                        fetch('../controllers/agendaController.php') // Solicita los eventos al controlador
+                            .then(response => response.json())
+                            .then(data => {
+                                successCallback(data);  // Pasa los eventos al calendario
+                            })
+                            .catch(error => {
+                                console.error('Error al cargar los eventos:', error);
+                                failureCallback(error);
                             });
                     },
                     dateClick: function (info) {

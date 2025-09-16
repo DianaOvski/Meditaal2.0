@@ -3,9 +3,10 @@ require_once "../models/Agenda.php"; // Asegúrate de que el modelo Agenda esté
 
 // agendaController.php
 
+// Verifica si la solicitud es GET para obtener las citas
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    // Obtener las citas de hoy (puedes cambiar el filtro para otros días)
-    $events = Agenda::getTodayAppointments();
+    // Obtener todas las citas agendadas
+    $events = Agenda::getAllAppointments();
 
     // Retorna los eventos como JSON
     echo json_encode($events);
