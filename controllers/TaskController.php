@@ -273,10 +273,10 @@ public function completeTask()
             exit;
         }
 
-        // lógica para cargar las notas desde la base de datos
+        // lógica para cargar la agenda desde la base de datos
 
         $view = __DIR__ . '/../views/task/agendaDos.php';
-        $title = 'Notas';
+        $title = 'Agenda Dos';
         include __DIR__ . '/../views/layout/layout.php';
     }
 
