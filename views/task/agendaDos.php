@@ -173,13 +173,17 @@ events: function(info, successCallback, failureCallback) {
                     eventContent: function(info) {
                         // Personalizar el contenido del evento
                         let patientName = info.event.title; // Nombre del paciente
-                        let eventTime = info.event.start.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}); // Hora del evento
-                        let patientAndTime = `${patientName} - ${eventTime}`; // Nombre del paciente + hora
+                        //let eventTime = info.event.start.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}); // Hora del evento
+                        let horaOriginal = info.event.startStr.split("T")[1]; // "12:32:00"
+                        let horaFormateada = horaOriginal.substring(0,5);   // "12:32"
+                        let patientAndTime = `${patientName} - ${horaFormateada}`; // Nombre del paciente + hora
 
                         return { html: `<div class="event-content">${patientAndTime}</div>` }; // El HTML que quieres mostrar
                     },
 
 eventClick: function(info) {
+    let horaOriginal = info.event.startStr.split("T")[1]; // "12:32:00"
+    let horaFormateada = horaOriginal.substring(0,5);     // "12:32"
     const event = info.event;
     console.log(event.extendedProps); 
 
@@ -192,7 +196,7 @@ eventClick: function(info) {
  Promise.all([loadPatients(), loadDoctors()])
         .then(() => {
             document.getElementById("paciente").value = event.extendedProps.paciente_documento;
-            document.getElementById("hora").value = event.start.toISOString().substring(11, 16); // hh:mm
+               document.getElementById("hora").value = horaFormateada;
             document.getElementById("doctor").value = event.extendedProps.doctor_id;
             document.getElementById("estado").value = event.extendedProps.estado;
 
