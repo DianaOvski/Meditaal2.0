@@ -8,6 +8,7 @@ public static function getAllAppointments() {
     $sql = "SELECT 
                 a.id, 
                 a.paciente_nombre AS title, 
+                a.paciente_documento,
                 -- DATE(a.fecha_agenda) AS fecha,  -- ✅ Extrae solo la parte de la fecha
                 CONCAT(a.fecha_agenda, 'T', a.hora_agendada) AS start,
                 'lightblue' AS color, 
@@ -41,7 +42,8 @@ while ($row = $query->fetch_assoc()) {
         'color' => 'lightblue',
         'estado' => $row['estado'],
         'doctor_id' => $row['doctor_id'],
-        'doctor' => $row['doctor']
+        'doctor' => $row['doctor'],
+        'paciente_documento' => $row['paciente_documento'] 
     ];
 }
 
@@ -81,11 +83,11 @@ while ($row = $query->fetch_assoc()) {
         }
 
         // Prepara la consulta SQL para insertar la cita
-        $stmt = $conn->prepare("INSERT INTO Agenda (paciente_nombre, hora_agendada, estado, doctor_id, Nombre_Doctor, fecha_agenda)
-                                VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO Agenda (paciente_nombre, paciente_documento, hora_agendada, estado, doctor_id, Nombre_Doctor, fecha_agenda)
+                                VALUES (?, ?, ?, ?, ?, ?, ?)");
 
         // Vincula los parámetros y ejecuta la consulta
-        $stmt->bind_param("sssiss", $paciente_nombre_completo, $hora_agendada, $estado, $doctor_id, $doctor_nombre_completo, $fecha_agenda);
+        $stmt->bind_param("sssiss", $paciente_nombre_completo, $paciente_documento, $hora_agendada, $estado, $doctor_id, $doctor_nombre_completo, $fecha_agenda);
 
         if ($stmt->execute()) {
             // Si se insertó correctamente, devuelve un mensaje de éxito

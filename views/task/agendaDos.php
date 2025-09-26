@@ -144,7 +144,7 @@ events: function(info, successCallback, failureCallback) {
                 return {
                     id: event.id,
                     title: event.title,
-                    start: new Date(event.start), //  Convertir a Date
+                    start: event.start,  //  Convertir a Date
                     color: event.color || 'lightblue',
                     extendedProps: {
                         estado: event.estado,
