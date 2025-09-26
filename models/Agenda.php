@@ -4,31 +4,52 @@ require_once __DIR__ . '/../config/database.php';
 class Agenda {
 
 public static function getAllAppointments() {
-    $conn = Database::connect();
+    $db = Database::connect();
+    $sql = "SELECT 
+                a.id, 
+                a.paciente_nombre AS title, 
+                -- DATE(a.fecha_agenda) AS fecha,  -- ✅ Extrae solo la parte de la fecha
+                CONCAT(a.fecha_agenda, 'T', a.hora_agendada) AS start,
+                'lightblue' AS color, 
+                a.estado, 
+                a.doctor_id,
+                a.fecha_agenda,
+                a.hora_agendada,
+                CONCAT(u.name, ' ', u.username) AS doctor
+            FROM agenda a
+            JOIN user u ON a.doctor_id = u.usu_id
+            WHERE u.rol = 'Doctor'";
 
-    // Obtener todas las citas
-    $query = "SELECT paciente_nombre, hora_agendada, estado, Nombre_Doctor, fecha_agenda 
-              FROM Agenda";  // Consulta todas las citas
-
-    $result = $conn->query($query);
-
+    $query = $db->query($sql);
     $events = [];
-    
-    // Recorre todas las filas de la base de datos y las convierte en eventos para el calendario
-    while ($row = $result->fetch_assoc()) {
-        $events[] = [
-            'title' => $row['paciente_nombre'],  // Nombre del paciente
-            'start' => $row['fecha_agenda'],     // Fecha y hora del evento (la columna `fecha_agenda` debe incluir la hora)
-            'color' => $row['estado'] == 'Agendado' ? 'lightblue' : 'gray',  // Color basado en el estado
-            'doctor' => $row['Nombre_Doctor'],  // Nombre del doctor
-        ];
+
+while ($row = $query->fetch_assoc()) {
+    $fecha = $row['fecha_agenda'];
+    $hora = $row['hora_agendada'];
+
+    // Asegura de que la hora tenga formato HH:MM:SS
+    if (strlen($hora) === 5) {
+        $hora .= ":00";
     }
+
+    $start_iso = $fecha . 'T' . $hora;
+
+    $events[] = [
+        'id' => $row['id'],
+        'title' => $row['title'],
+        'start' => $start_iso,
+        'color' => 'lightblue',
+        'estado' => $row['estado'],
+        'doctor_id' => $row['doctor_id'],
+        'doctor' => $row['doctor']
+    ];
+}
 
     return $events;
 }
 
     // Método para agendar la cita
-    public static function agendarCita($paciente_nombre, $hora_agendada, $doctor_id, $estado) {
+    public static function agendarCita($paciente_nombre, $hora_agendada, $doctor_id, $estado, $fecha_agenda) {
         $conn = Database::connect();
 
         // Obtener el nombre del paciente (si solo estás guardando el documento)
@@ -60,11 +81,11 @@ public static function getAllAppointments() {
         }
 
         // Prepara la consulta SQL para insertar la cita
-        $stmt = $conn->prepare("INSERT INTO Agenda (paciente_nombre, hora_agendada, estado, doctor_id, Nombre_Doctor)
-                                VALUES (?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO Agenda (paciente_nombre, hora_agendada, estado, doctor_id, Nombre_Doctor, fecha_agenda)
+                                VALUES (?, ?, ?, ?, ?, ?)");
 
         // Vincula los parámetros y ejecuta la consulta
-        $stmt->bind_param("sssis", $paciente_nombre_completo, $hora_agendada, $estado, $doctor_id, $doctor_nombre_completo);
+        $stmt->bind_param("sssiss", $paciente_nombre_completo, $hora_agendada, $estado, $doctor_id, $doctor_nombre_completo, $fecha_agenda);
 
         if ($stmt->execute()) {
             // Si se insertó correctamente, devuelve un mensaje de éxito
@@ -72,6 +93,34 @@ public static function getAllAppointments() {
         } else {
             // Si hay un error, devuelve un mensaje de error
             return ["success" => false, "message" => "Error al agendar la cita: " . $stmt->error];
+        }
+    }
+
+     // Método para actualizar la cita
+    public static function updateAppointment($event_id, $paciente_nombre, $hora_agendada, $estado) {
+        $conn = Database::connect();
+
+        $stmt = $conn->prepare("UPDATE Agenda SET paciente_nombre = ?, hora_agendada = ?, estado = ? WHERE id = ?");
+        $stmt->bind_param("sssi", $paciente_nombre, $hora_agendada, $estado, $event_id);
+
+        if ($stmt->execute()) {
+            return ["success" => true, "message" => "Cita actualizada correctamente."];
+        } else {
+            return ["success" => false, "message" => "Error al actualizar la cita: " . $stmt->error];
+        }
+    }
+
+    // Método para eliminar la cita
+    public static function deleteAppointment($event_id) {
+        $conn = Database::connect();
+
+        $stmt = $conn->prepare("DELETE FROM Agenda WHERE id = ?");
+        $stmt->bind_param("i", $event_id);
+
+        if ($stmt->execute()) {
+            return ["success" => true, "message" => "Cita eliminada correctamente."];
+        } else {
+            return ["success" => false, "message" => "Error al eliminar la cita: " . $stmt->error];
         }
     }
 }

@@ -8,7 +8,7 @@
         <!-- Bootstrap CSS v5.2.1 -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
         <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.js"></script>  <!--Hacer Pruebas y ver si funciona sin este  -->
         <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/locales-all.js"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/main.css" />
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -68,7 +68,8 @@
         </div>
 
         <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel">
+
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -104,8 +105,10 @@
                                     <option value="Fallo">Fallo</option>
                                 </select>
                             </div>
-                            <button type="submit" class="btn btn-primary">Guardar</button>
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Cancelar</button> <!-- Botón de Cancelar -->
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Guardar</button>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Cancelar</button> <!-- Botón de Cancelar -->
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -125,18 +128,40 @@
                         center: 'title',
                         right: 'dayGridMonth,timeGridWeek,timeGridDay'
                     },
-                    events: function(info, successCallback, failureCallback) {
-                        // Cargar todos los eventos agendados
-                        fetch('../controllers/agendaController.php') // Solicita los eventos al controlador
-                            .then(response => response.json())
-                            .then(data => {
-                                successCallback(data);  // Pasa los eventos al calendario
-                            })
-                            .catch(error => {
-                                console.error('Error al cargar los eventos:', error);
-                                failureCallback(error);
-                            });
-                    },
+events: function(info, successCallback, failureCallback) {
+    fetch('../controllers/agendaController.php')
+        .then(response => response.json())
+        .then(data => {
+            console.log("Eventos recibidos:", data);
+
+            if (!Array.isArray(data)) {
+                throw new Error("La respuesta no es un array.");
+            }
+
+            const events = data.map(event => {
+                console.log("Start:", event.start);  // Verifico que sea tipo "2025-09-17T13:00:00"
+
+                return {
+                    id: event.id,
+                    title: event.title,
+                    start: new Date(event.start), //  Convertir a Date
+                    color: event.color || 'lightblue',
+                    extendedProps: {
+                        estado: event.estado,
+                        doctor: event.doctor,
+                        doctor_id: event.doctor_id,
+                        paciente_documento: event.paciente_documento
+                    }
+                };
+            });
+
+            successCallback(events);
+        })
+        .catch(error => {
+            console.error('Error al cargar los eventos:', error);
+            failureCallback(error);
+        });
+},
                     dateClick: function (info) {
                         selectedDate = info.dateStr; // Asigna la fecha seleccionada
                         loadPatients(selectedDate);
@@ -153,13 +178,119 @@
 
                         return { html: `<div class="event-content">${patientAndTime}</div>` }; // El HTML que quieres mostrar
                     },
+
+eventClick: function(info) {
+    const event = info.event;
+    console.log(event.extendedProps); 
+
+    const myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
+
+    // Cambiar el título del modal a "Actualizar Agendamiento"
+    document.getElementById("exampleModalLabel").textContent = "Actualizar Agendamiento";
+
+    // Llenar los campos del modal con la información del evento
+ Promise.all([loadPatients(), loadDoctors()])
+        .then(() => {
+            document.getElementById("paciente").value = event.extendedProps.paciente_documento;
+            document.getElementById("hora").value = event.start.toISOString().substring(11, 16); // hh:mm
+            document.getElementById("doctor").value = event.extendedProps.doctor_id;
+            document.getElementById("estado").value = event.extendedProps.estado;
+
+            document.getElementById("exampleModalLabel").textContent = "Actualizar Agendamiento";
+            myModal.show();
+        });
+
+    // Mostrar modal para editar
+    // var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
+    // myModal.show();
+
+    // Añadir lógica para la actualización o eliminación de la cita
+    document.getElementById('agendarForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const paciente = document.getElementById("paciente").value;
+        const hora = document.getElementById("hora").value;
+        const estado = document.getElementById("estado").value;
+
+        // Verificar que todos los campos estén llenos
+        if (!paciente || !hora || !estado) {
+            Swal.fire('Error', 'Por favor complete todos los campos', 'error');
+            return;
+        }
+
+        // Enviar la actualización de los datos al servidor (actualizar la cita)
+        fetch('../controllers/agendaController.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                action: 'update',
+                paciente_nombre: paciente,
+                hora: hora,
+                estado: estado,
+                event_id: event.id  // El ID del evento para actualizar
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire('Éxito', 'Cita actualizada con éxito', 'success');
+                myModal.hide();  // Cierra el modal
+                calendar.refetchEvents();  // Refresca los eventos en el calendario
+            } else {
+                Swal.fire('Error', data.message, 'error');
+            }
+        });
+    });
+
+    // Eliminar la cita
+    const modalFooter = document.querySelector('.modal-footer');
+    
+    // Verifico si el botón de eliminar ya está presente
+    const deleteButton = modalFooter.querySelector('.btn-danger');
+    if (!deleteButton) {
+        const deleteButton = document.createElement("button");
+        deleteButton.classList.add("btn", "btn-danger");
+        deleteButton.textContent = "Eliminar cita";
+        deleteButton.addEventListener("click", function () {
+            // Enviar la solicitud de eliminación
+            fetch('../controllers/agendaController.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    action: 'delete',
+                    event_id: event.id  // El ID del evento para eliminar
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire('Éxito', 'Cita eliminada con éxito', 'success');
+                    myModal.hide();  // Cierra el modal
+                    calendar.refetchEvents();  // Refresca el calendario
+                } else {
+                    Swal.fire('Error', data.message, 'error');
+                }
+            });
+        });
+
+        // Añadir el botón de eliminar al modal
+        modalFooter.appendChild(deleteButton);
+    }
+}
+
+
+
                 });
                 calendar.render();
             });
 
             // Cargar pacientes activos
             function loadPatients(date) {
-                fetch('../controllers/patientController.php?op=listarPacientes') // Cambia la ruta por la de tu controlador
+               return  fetch('../controllers/patientController.php?op=listarPacientes') // Cambia la ruta por la de tu controlador
                     .then(response => response.json())
                     .then(data => {
                         const pacienteSelect = document.getElementById("paciente");
@@ -181,27 +312,27 @@
             }
 
             // Cargar doctores
-            function loadDoctors() {
-                fetch('../controllers/doctorController.php?op=listarDoctores') // Asegúrate de que la ruta sea correcta
-                    .then(response => response.json())
-                    .then(data => {
-                        const doctorSelect = document.getElementById("doctor");
-                        doctorSelect.innerHTML = ''; // Limpiar las opciones previas
-                        const defaultOption = document.createElement("option");
-                        defaultOption.value = "";
-                        defaultOption.disabled = true;
-                        defaultOption.selected = true;
-                        defaultOption.textContent = "Seleccione un doctor";
-                        doctorSelect.appendChild(defaultOption);
+                function loadDoctors() {
+                  return  fetch('../controllers/doctorController.php?op=listarDoctores')
+                        .then(response => response.json())
+                        .then(data => {
+                            const doctorSelect = document.getElementById("doctor");
+                            doctorSelect.innerHTML = '';  // Limpiar las opciones previas
+                            const defaultOption = document.createElement("option");
+                            defaultOption.value = "";
+                            defaultOption.disabled = true;
+                            defaultOption.selected = true;
+                            defaultOption.textContent = "Seleccione un doctor";
+                            doctorSelect.appendChild(defaultOption);
 
-                        data.forEach(doctor => {
-                            const option = document.createElement("option");
-                            option.value = doctor.id;
-                            option.textContent = `${doctor.name} ${doctor.lastName}`;
-                            doctorSelect.appendChild(option);
+                            data.forEach(doctor => {
+                                const option = document.createElement("option");
+                                option.value = doctor.id;
+                                option.textContent = `${doctor.name} ${doctor.lastName}`;
+                                doctorSelect.appendChild(option);
+                            });
                         });
-                    });
-            }
+                }
 
             // Enviar los datos al guardar
             document.getElementById('agendarForm').addEventListener('submit', function (e) {
