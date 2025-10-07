@@ -43,7 +43,7 @@ if (isset($inputData['action']) && $inputData['action'] === 'create') {
     $paciente_documento = $inputData['paciente_documento'];
     $hora_agendada = $inputData['hora'];
     $doctor_id = $inputData['doctor'];
-    $estado = $inputData['estado'];
+    $estado = !empty($inputData['estado']) ? $inputData['estado'] : 'Agendado';
     $fecha_agenda = $inputData['fecha_agenda'];
 
     try {

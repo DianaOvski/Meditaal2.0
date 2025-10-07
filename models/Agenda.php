@@ -98,26 +98,43 @@ public static function getAllAppointments() {
         }
 
         // Prepara la consulta SQL para insertar la cita
-        $stmt = $conn->prepare("INSERT INTO Agenda (paciente_nombre, paciente_documento, hora_agendada, estado, doctor_id, Nombre_Doctor, fecha_agenda)
+        $stmt = $conn->prepare("INSERT INTO agenda (paciente_nombre, paciente_documento, hora_agendada, estado, doctor_id, Nombre_Doctor, fecha_agenda)
                                 VALUES (?, ?, ?, ?, ?, ?, ?)");
 
-        // Vincula los parámetros y ejecuta la consulta
-        $stmt->bind_param("sssisss", $paciente_nombre_completo, $paciente_documento, $hora_agendada, $estado, $doctor_id, $doctor_nombre_completo, $fecha_agenda);
+        if (!$stmt) {
+            error_log("Prepare failed: " . $conn->error);
+            return ["success" => false, "message" => "Error al preparar la inserción: " . $conn->error];
+        }
 
-        if ($stmt->execute()) {
-            // Si se insertó correctamente, devuelve un mensaje de éxito
-            return ["success" => true, "message" => "Cita agendada correctamente."];
-        } else {
-            // Si hay un error, devuelve un mensaje de error
+        // Asegurar estado por defecto y tipos correctos
+        $estado = !empty($estado) ? $estado : 'Agendado';
+        $doctor_id = (int)$doctor_id;     
+
+        error_log("✅ Insertando cita: $paciente_documento - Estado: $estado - Doctor: $doctor_id - Fecha: $fecha_agenda");
+
+
+        // Vincula los parámetros y ejecuta la consulta
+        $stmt->bind_param("ssssiss", $paciente_nombre_completo, $paciente_documento, $hora_agendada, $estado, $doctor_id, $doctor_nombre_completo, $fecha_agenda);
+
+        if (!$stmt->execute()) {
+            error_log("Execute failed: " . $stmt->error);
+            // opcional: registrar warnings de MySQL
+            if ($res = $conn->query("SHOW WARNINGS")) {
+                while ($w = $res->fetch_assoc()) {
+                    error_log("MySQL warning: " . $w['Message']);
+                }
+            }
             return ["success" => false, "message" => "Error al agendar la cita: " . $stmt->error];
         }
+
+        return ["success" => true, "message" => "Cita agendada correctamente."];
     }
 
      // Método para actualizar la cita
     public static function updateAppointment($event_id, $paciente_nombre, $hora_agendada, $estado) {
         $conn = Database::connect();
 
-        $stmt = $conn->prepare("UPDATE Agenda SET paciente_nombre = ?, hora_agendada = ?, estado = ? WHERE id = ?");
+        $stmt = $conn->prepare("UPDATE agenda SET paciente_nombre = ?, hora_agendada = ?, estado = ? WHERE id = ?");
         $stmt->bind_param("sssi", $paciente_nombre, $hora_agendada, $estado, $event_id);
 
         if ($stmt->execute()) {
@@ -131,7 +148,7 @@ public static function getAllAppointments() {
     public static function deleteAppointment($event_id) {
         $conn = Database::connect();
 
-        $stmt = $conn->prepare("DELETE FROM Agenda WHERE id = ?");
+        $stmt = $conn->prepare("DELETE FROM agenda WHERE id = ?");
         $stmt->bind_param("i", $event_id);
 
         if ($stmt->execute()) {

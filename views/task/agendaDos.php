@@ -80,8 +80,7 @@
                     <div class="mb-3">
                         <label for="estado" class="form-label">Estado</label>
                         <select id="estado" class="form-select">
-                            <option value="" disabled selected hidden>Seleccione estado</option>
-                            <option value="Agendado">Agendado</option>
+                            <option value="Agendado" selected>Agendado</option>
                             <option value="Atendido">Atendido</option>
                             <option value="Cancelado">Cancelado</option>
                             <option value="Fallo">Fallo</option>
@@ -146,7 +145,6 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("paciente").value = "";
             document.getElementById("hora").value = "";
             document.getElementById("doctor").value = "";
-            document.getElementById("estado").value = "";
             document.getElementById("exampleModalLabel").textContent = "Agendar Paciente";
 
             Promise.all([loadPatients(), loadDoctors()]).then(() => {
@@ -228,6 +226,8 @@ document.addEventListener("DOMContentLoaded", function () {
             Swal.fire('Error', 'Por favor complete todos los campos', 'error');
             return;
         }
+
+        const estadoFinal = estado || 'Agendado'; //asi me aseguro que aunque el usuario no seleccione manualmente el estado, siempre se guardará como “Agendado”.
 
         const payload = isEditMode
             ? { action: 'update',
