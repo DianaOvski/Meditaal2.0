@@ -51,12 +51,13 @@ while ($row = $query->fetch_assoc()) {
 }
 
     // Método para agendar la cita
-    public static function agendarCita($paciente_nombre, $hora_agendada, $doctor_id, $estado, $fecha_agenda) {
+    public static function agendarCita($paciente_documento, $hora_agendada, $doctor_id, $estado, $fecha_agenda) {
         $conn = Database::connect();
 
         // Obtener el nombre del paciente (si solo estás guardando el documento)
         $stmt_patient = $conn->prepare("SELECT Nombres, Apellidos FROM patient WHERE Documento = ?");
-        $stmt_patient->bind_param("s", $paciente_nombre);
+        error_log("Debug estado: '$estado'");
+        $stmt_patient->bind_param("s", $paciente_documento);
         $stmt_patient->execute();
         $stmt_patient->store_result();
 
@@ -87,7 +88,7 @@ while ($row = $query->fetch_assoc()) {
                                 VALUES (?, ?, ?, ?, ?, ?, ?)");
 
         // Vincula los parámetros y ejecuta la consulta
-        $stmt->bind_param("sssiss", $paciente_nombre_completo, $paciente_documento, $hora_agendada, $estado, $doctor_id, $doctor_nombre_completo, $fecha_agenda);
+        $stmt->bind_param("sssisss", $paciente_nombre_completo, $paciente_documento, $hora_agendada, $estado, $doctor_id, $doctor_nombre_completo, $fecha_agenda);
 
         if ($stmt->execute()) {
             // Si se insertó correctamente, devuelve un mensaje de éxito

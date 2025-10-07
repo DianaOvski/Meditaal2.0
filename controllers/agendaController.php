@@ -33,21 +33,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Crear nueva cita
-    if (isset($inputData['paciente_nombre'], $inputData['hora'], $inputData['doctor'], $inputData['estado'])) {
-        $paciente_nombre = $inputData['paciente_nombre'];
-        $hora_agendada = $inputData['hora'];
-        $doctor_id = $inputData['doctor'];
-        $estado = $inputData['estado'];
-
-        try {
-            $response = Agenda::agendarCita($paciente_nombre, $hora_agendada, $doctor_id, $estado);
-            echo json_encode($response);
-        } catch (Exception $e) {
-            http_response_code(500);
-            echo json_encode(["error" => "Error al agendar cita: " . $e->getMessage()]);
-        }
+if (isset($inputData['action']) && $inputData['action'] === 'create') {
+    if (!isset($inputData['paciente_documento'], $inputData['hora'], $inputData['doctor'], $inputData['estado'], $inputData['fecha_agenda'])) {
+        http_response_code(400);
+        echo json_encode(["error" => "Faltan datos para crear la cita"]);
         exit;
     }
+
+    $paciente_documento = $inputData['paciente_documento'];
+    $hora_agendada = $inputData['hora'];
+    $doctor_id = $inputData['doctor'];
+    $estado = $inputData['estado'];
+    $fecha_agenda = $inputData['fecha_agenda'];
+
+    try {
+        $response = Agenda::agendarCita($paciente_documento, $hora_agendada, $doctor_id, $estado, $fecha_agenda);
+        echo json_encode($response);
+    } catch (Exception $e) {
+        http_response_code(500);
+        echo json_encode(["error" => "Error al agendar cita: " . $e->getMessage()]);
+    }
+    exit;
+}
 
     // Actualizar cita existente
     if (isset($inputData['action'], $inputData['event_id']) && $inputData['action'] === 'update') {
