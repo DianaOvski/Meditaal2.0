@@ -26,22 +26,22 @@
             font-size: 12px;
             white-space: normal;
             overflow: visible;
+            border-radius: 5px;
+            padding: 3px;
+            color: white !important;
+            border: none !important;
         }
         .fc-event-title {
             font-weight: bold;
         }
         .event-content {
             font-size: 12px;
-            color: black;
+            color: white;
             padding: 5px;
-            background-color: lightgray;
-            border-radius: 3px;
+            border-radius: 5px;
         }
         .highlighted-day { background-color: blue !important; }
-        .cancelado { background-color: red !important; }
-        .atendido { background-color: #003366 !important; }
-        .fallo { background-color: gray !important; }
-        .agendado { background-color: lightblue !important; }
+
     </style>
 </head>
 
@@ -120,7 +120,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         id: event.id,
                         title: event.title,
                         start: event.start,
-                        color: event.color || 'lightblue',
+                        backgroundColor: event.color,   //  color de fondo
+                        borderColor: event.color,       //  color del borde
+                        textColor: 'white',             //  color del texto (para contraste)
                         extendedProps: {
                             estado: event.estado,
                             doctor: event.doctor,
@@ -154,7 +156,11 @@ document.addEventListener("DOMContentLoaded", function () {
         eventContent: function (info) {
             const patientName = info.event.title;
             const horaFormateada = info.event.startStr.split("T")[1].substring(0, 5);
-            return { html: `<div class="event-content">${patientName} - ${horaFormateada}</div>` };
+            const color = info.event.backgroundColor;
+
+            return { html: `<div class="event-content" style="background-color:${color}; color:white;">
+                ${patientName} - ${horaFormateada}
+            </div>` };
         },
         eventClick: function (info) {
             isEditMode = true;

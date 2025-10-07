@@ -9,9 +9,7 @@ public static function getAllAppointments() {
                 a.id, 
                 a.paciente_nombre AS title, 
                 a.paciente_documento,
-                -- DATE(a.fecha_agenda) AS fecha,  -- ✅ Extrae solo la parte de la fecha
                 CONCAT(a.fecha_agenda, 'T', a.hora_agendada) AS start,
-                'lightblue' AS color, 
                 a.estado, 
                 a.doctor_id,
                 a.fecha_agenda,
@@ -24,31 +22,47 @@ public static function getAllAppointments() {
     $query = $db->query($sql);
     $events = [];
 
-while ($row = $query->fetch_assoc()) {
-    $fecha = $row['fecha_agenda'];
-    $hora = $row['hora_agendada'];
+    while ($row = $query->fetch_assoc()) {
+        $fecha = $row['fecha_agenda'];
+        $hora = $row['hora_agendada'];
 
-    // Asegura de que la hora tenga formato HH:MM:SS
-    if (strlen($hora) === 5) {
-        $hora .= ":00";
+        if (strlen($hora) === 5) {
+            $hora .= ":00";
+        }
+
+        // 🔹 Asignar color según estado
+        switch ($row['estado']) {
+            case 'Atendido':
+                $color = 'green';
+                break;
+            case 'Cancelado':
+                $color = 'orange';
+                break;
+            case 'Fallo':
+                $color = 'red';
+                break;
+            default:
+                $color = 'lightgray'; // Agendado o cualquier otro
+                break;
+        }
+
+        $start_iso = $fecha . 'T' . $hora;
+
+        $events[] = [
+            'id' => $row['id'],
+            'title' => $row['title'],
+            'start' => $start_iso,
+            'color' => $color,  // aqui le coloco un color dinámico
+            'estado' => $row['estado'],
+            'doctor_id' => $row['doctor_id'],
+            'doctor' => $row['doctor'],
+            'paciente_documento' => $row['paciente_documento'] 
+        ];
     }
-
-    $start_iso = $fecha . 'T' . $hora;
-
-    $events[] = [
-        'id' => $row['id'],
-        'title' => $row['title'],
-        'start' => $start_iso,
-        'color' => 'lightblue',
-        'estado' => $row['estado'],
-        'doctor_id' => $row['doctor_id'],
-        'doctor' => $row['doctor'],
-        'paciente_documento' => $row['paciente_documento'] 
-    ];
-}
 
     return $events;
 }
+
 
     // Método para agendar la cita
     public static function agendarCita($paciente_documento, $hora_agendada, $doctor_id, $estado, $fecha_agenda) {
