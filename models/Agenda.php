@@ -131,11 +131,28 @@ public static function getAllAppointments() {
     }
 
      // Método para actualizar la cita
-    public static function updateAppointment($event_id, $paciente_nombre, $hora_agendada, $estado) {
+    public static function updateAppointment($event_id, $paciente_nombre, $hora_agendada, $estado, $doctor_id) {
         $conn = Database::connect();
 
-        $stmt = $conn->prepare("UPDATE agenda SET paciente_nombre = ?, hora_agendada = ?, estado = ? WHERE id = ?");
-        $stmt->bind_param("sssi", $paciente_nombre, $hora_agendada, $estado, $event_id);
+        // 🔹 1. Obtener el nombre completo del doctor
+        $stmt_doctor = $conn->prepare("SELECT name, username FROM user WHERE usu_id = ? AND rol = 'Doctor'");
+        $stmt_doctor->bind_param("i", $doctor_id);
+        $stmt_doctor->execute();
+        $stmt_doctor->store_result();
+
+        if ($stmt_doctor->num_rows > 0) {
+            $stmt_doctor->bind_result($doctor_name, $doctor_username);
+            $stmt_doctor->fetch();
+            $doctor_nombre_completo = $doctor_name . ' ' . $doctor_username;
+        } else {
+            return ["success" => false, "message" => "Doctor no encontrado"];
+        }
+
+        // 🔹 2. Actualizar los datos de la cita (incluyendo Nombre_Doctor y doctor_id)
+        $stmt = $conn->prepare("UPDATE agenda 
+                                SET paciente_nombre = ?, hora_agendada = ?, estado = ?, doctor_id = ?, Nombre_Doctor = ? 
+                                WHERE id = ?");
+        $stmt->bind_param("sssisi", $paciente_nombre, $hora_agendada, $estado, $doctor_id, $doctor_nombre_completo, $event_id);
 
         if ($stmt->execute()) {
             return ["success" => true, "message" => "Cita actualizada correctamente."];

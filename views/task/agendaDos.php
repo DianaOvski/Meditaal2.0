@@ -145,6 +145,7 @@ document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("paciente").value = "";
             document.getElementById("hora").value = "";
             document.getElementById("doctor").value = "";
+
             document.getElementById("exampleModalLabel").textContent = "Agendar Paciente";
 
             Promise.all([loadPatients(), loadDoctors()]).then(() => {
@@ -234,7 +235,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 event_id: editingEventId, 
                 paciente_nombre: selectedPacienteNombre,
                 hora, 
-                estado }
+                estado,
+                doctor 
+            }
             : { action: 'create',
                  paciente_documento: paciente, 
                  hora, 

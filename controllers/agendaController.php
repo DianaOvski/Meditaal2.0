@@ -58,7 +58,7 @@ if (isset($inputData['action']) && $inputData['action'] === 'create') {
 
     // Actualizar cita existente
     if (isset($inputData['action'], $inputData['event_id']) && $inputData['action'] === 'update') {
-        if (!isset($inputData['paciente_nombre'], $inputData['hora'], $inputData['estado'])) {
+        if (!isset($inputData['paciente_nombre'], $inputData['hora'], $inputData['estado'], $inputData['doctor'])) {
             http_response_code(400);
             echo json_encode(["error" => "Faltan datos para actualizar la cita"]);
             exit;
@@ -68,9 +68,10 @@ if (isset($inputData['action']) && $inputData['action'] === 'create') {
         $paciente_nombre = $inputData['paciente_nombre'];
         $hora_agendada = $inputData['hora'];
         $estado = $inputData['estado'];
+        $doctor_id = $inputData['doctor'];
 
         try {
-            $response = Agenda::updateAppointment($event_id, $paciente_nombre, $hora_agendada, $estado);
+            $response = Agenda::updateAppointment($event_id, $paciente_nombre, $hora_agendada, $estado, $doctor_id);
             echo json_encode($response);
         } catch (Exception $e) {
             http_response_code(500);
